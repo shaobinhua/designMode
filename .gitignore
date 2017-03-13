@@ -12,6 +12,7 @@
 hs_err_pid*
 design_model*.iml
 target/
+out/
 .project
 .classpath
 .settings
