@@ -1,0 +1,21 @@
+模拟tomcat 的filter的责任链
+tomcat 通过将filter预先加载在容器里，通过容器依次执行
+
+
+tomcat的ApplicationFilterChain类所扮演的就是抽象处理者角色，而具体处理者角色由各个Filter扮演；
+ApplicationFilterChain将所有的Filter保存在ApplicationFilterChain类中的一个ApplicationFilterConfig对象的数组中；
+（ApplicationFilterConfig是一个Filter容器）
+当一个web应用首次启动时ApplicationFilterConfig会自动实例化，它会从该web应用的web.xml文件中读取配置的Filter的信息，然后装进该容器。
+
+在StandardWrapperValue类的invoke()方法中调用ApplicationFilterChai类的createFilterChain()方法———>
+在ApplicationFilterChai类的createFilterChain()方法中调用ApplicationFilterChain类的addFilter()方法———>
+在ApplicationFilterChain类的addFilter()方法中给ApplicationFilterConfig数组赋值。
+
+StandardWrapperValue类的invoke()方法在执行完createFilterChain()方法后，
+继续执行ApplicationFilterChain类的doFilter()方法，
+（代码：filterChain.doFilter(request.getRequest(), response.getResponse());）
+然后在doFilter()方法中会调用internalDoFilter()方法
+
+internalDoFilter()方法的filter.doFilter(request, response, this);就是调用自己创建的Filter中的doFilter()方法。
+自己创建的Filter的doFilter()方法会继续调用ApplicationFilterChain.doFilter(request, response)方法，
+所以调用过程又回到了上面调用dofilter和调用internalDoFilter方法，这样执行直到里面的过滤器全部执行
