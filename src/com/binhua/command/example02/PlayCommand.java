@@ -1,0 +1,17 @@
+package com.binhua.command.example02;
+
+/**
+ * Created by shaobinhua on 2017/4/11.
+ */
+public class PlayCommand implements AudioCommand {
+    private AudioPlayer audioPlayer;
+
+    public PlayCommand(AudioPlayer audioPlayer) {
+        this.audioPlayer = audioPlayer;
+    }
+
+    @Override
+    public void executor() {
+        audioPlayer.play();
+    }
+}
